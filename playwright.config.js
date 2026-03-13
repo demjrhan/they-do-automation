@@ -9,7 +9,7 @@ module.exports = defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'list',
   use: {
-    baseURL: 'https://app.theydo.com/login?path=/',
+    baseURL: 'https://app.theydo.com',
     trace: 'on-first-retry',
   },
   projects: [

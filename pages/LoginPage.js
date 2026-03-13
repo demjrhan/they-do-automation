@@ -6,9 +6,10 @@ export class LoginPage extends BasePage {
         this.emailInput = this.page.getByLabel('Email input');
         this.passwordInput = this.page.getByLabel('Password input');
         this.loginButton = this.page.getByRole('button', { name: 'Login' });
+        this.seePasswordButton = this.page.getByLabel('Show');
     }
     async open() {
-        await this.goto('/');
+        await this.goto('/login');
         return this;
     }
 
@@ -17,5 +18,8 @@ export class LoginPage extends BasePage {
         await this.sendKeys(this.emailInput, credentials.login);
         await this.sendKeys(this.passwordInput, credentials.password);
         await this.click(this.loginButton);
+    }
+    async isShowPasswordButtonClickable() {
+        return await this.isEnabled(this.seePasswordButton);
     }
 }
