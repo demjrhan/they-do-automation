@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 export class BasePage {
   constructor(page) {
       this.page = page;
@@ -12,6 +14,16 @@ export class BasePage {
   async refresh() {
       await this.page.reload();
       return this;
+  }
+
+  async getCredentials() {
+      const login = process.env.LOGIN;
+      const password = process.env.PASSWORD;
+      return { login, password };
+  }
+
+  async getOrganizationName(){
+    return process.env.ORGANIZATION;
   }
 
   locator(selector) {

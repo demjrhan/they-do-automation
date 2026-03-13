@@ -15,6 +15,7 @@ test.describe('Home Page Tests', () => {
     })
 
     test('Home Page loads correctly.', async ({ page }) => {
-        await expect(page).toHaveURL('theydo')
+        const workspaceUrl = await homePage.getWorkspaceUrl()
+        await expect(page).toHaveURL(workspaceUrl);
     })
 })
