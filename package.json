@@ -1,0 +1,13 @@
+{
+  "name": "they-do-automation",
+  "version": "1.0.0",
+  "description": "Playwright automation framework for TheyDo",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2"
+  }
+}
