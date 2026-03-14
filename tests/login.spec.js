@@ -1,5 +1,5 @@
-import {expect, test} from "@playwright/test";
-import {LoginPage} from "../pages/LoginPage";
+import { expect, test } from "@playwright/test";
+import { LoginPage } from "../pages/LoginPage";
 import * as helpers from "../utils/helpers.js"
 
 

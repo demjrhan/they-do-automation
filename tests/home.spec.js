@@ -1,6 +1,6 @@
-import {test, expect} from '@playwright/test';
-import {HomePage} from '../pages/HomePage.js';
-import {LoginPage} from '../pages/LoginPage.js';
+import { test, expect } from '@playwright/test';
+import { HomePage } from '../pages/HomePage.js';
+import { LoginPage } from '../pages/LoginPage.js';
 
 test.describe('Home Page Tests', () => {
 

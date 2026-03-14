@@ -12,6 +12,7 @@ export class LoginPage extends BasePage {
         this.emailError = this.page.getByText('Invalid email address');
         this.passwordError = this.page.getByText('Password is required');
     }
+
     async open() {
         await this.goto('/login');
         return this;
