@@ -1,5 +1,6 @@
 import {expect, test} from "@playwright/test";
 import {LoginPage} from "../pages/LoginPage";
+import * as helpers from "../utils/helpers.js"
 
 
 test.describe('Login Page Tests', () => {
@@ -35,4 +36,44 @@ test.describe('Login Page Tests', () => {
         await loginPage.clickCreateAccountButton();
         await expect(page).toHaveURL('register');
     });
+
+    test('Not submitting any credentials should trigger both validation errors.', async ({page}) => {
+        await loginPage.clickLoginButton();
+        const isEmailErrorVisible = await loginPage.isEmailErrorVisible();
+        const isPasswordErrorVisible = await loginPage.isPasswordErrorVisible();
+        const emailErrorText = await loginPage.getEmailErrorText();
+        const passwordErrorText = await loginPage.getPasswordErrorText();
+
+        expect(isEmailErrorVisible).toBeTruthy();
+        expect(emailErrorText).toBeTruthy();
+        expect(emailErrorText.toLowerCase()).toContain('email');
+
+        expect(isPasswordErrorVisible).toBeTruthy();
+        expect(passwordErrorText).toBeTruthy();
+        expect(passwordErrorText.toLowerCase()).toContain('password');
+    });
+
+    test('Invalid email address should trigger validation error.', async ({page}) => {
+        await loginPage.writeEmail(helpers.getInvalidEmail());
+        await loginPage.clickLoginButton();
+        const isEmailErrorVisible = await loginPage.isEmailErrorVisible();
+        const emailErrorText = await loginPage.getEmailErrorText();
+
+        expect(isEmailErrorVisible).toBeTruthy();
+        expect(emailErrorText).toBeTruthy();
+        expect(emailErrorText.toLowerCase()).toContain('email');
+    });
+
+    test('Invalid password should trigger validation error.', async ({ page }) => {
+        await loginPage.writePassword(helpers.getInvalidPassword());
+        await loginPage.clickLoginButton();
+        const isPasswordErrorVisible = await loginPage.isPasswordErrorVisible();
+        const passwordErrorText = await loginPage.getPasswordErrorText();
+
+        expect(isPasswordErrorVisible).toBeTruthy();
+        expect(passwordErrorText).toBeTruthy();
+        expect(passwordErrorText.toLowerCase()).toContain('password');
+    });
+
+
 })

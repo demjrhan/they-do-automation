@@ -9,10 +9,19 @@ export class LoginPage extends BasePage {
         this.seePasswordButton = this.page.getByLabel('Show');
         this.forgotButton = this.page.getByRole('link', { name: 'Forgot' });
         this.createAccountButton = this.page.getByRole('link', { name: 'Create Account' });
+        this.emailError = this.page.getByText('Invalid email address');
+        this.passwordError = this.page.getByText('Password is required');
     }
     async open() {
         await this.goto('/login');
         return this;
+    }
+
+    async login() {
+        const credentials = await this.getCredentials();
+        await this.writePassword(credentials.login);
+        await this.writePassword(credentials.password);
+        await this.clickLoginButton();
     }
 
     async writePassword(password) {
@@ -25,15 +34,8 @@ export class LoginPage extends BasePage {
         await this.sendKeys(this.emailInput, value);
     }
 
-    async login() {
-        const credentials = await this.getCredentials();
-        await this.sendKeys(this.emailInput, credentials.login);
-        await this.sendKeys(this.passwordInput, credentials.password);
-        await this.click(this.loginButton);
-    }
-
-    async isShowPasswordButtonClickable() {
-        return await this.isEnabled(this.seePasswordButton);
+    async clickLoginButton() {
+        await this.loginButton.click();
     }
 
     async clickForgotButton() {
@@ -43,4 +45,25 @@ export class LoginPage extends BasePage {
     async clickCreateAccountButton() {
         await this.click(this.createAccountButton);
     }
+
+    async isShowPasswordButtonClickable() {
+        return await this.isEnabled(this.seePasswordButton);
+    }
+
+    async isEmailErrorVisible() {
+        return await this.isVisible(this.emailError);
+    }
+
+    async isPasswordErrorVisible() {
+        return await this.isVisible(this.passwordError);
+    }
+
+    async getEmailErrorText(){
+        return await this.getText(this.emailError);
+    }
+
+    async getPasswordErrorText(){
+        return await this.getText(this.passwordError);
+    }
+
 }
