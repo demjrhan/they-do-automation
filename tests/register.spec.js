@@ -38,7 +38,7 @@ test.describe('Register Page Tests', () => {
         expect(isCreateAccountClickable).toBeTruthy();
     });
 
-    test.only('Valid email with invalid password should trigger only password validation error.', async () => {
+    test('Valid email with invalid password should trigger only password validation error.', async () => {
         await registerPage.writeEmail(helpers.getValidEmail());
         await registerPage.writePassword(helpers.getInvalidPassword());
 
@@ -53,7 +53,7 @@ test.describe('Register Page Tests', () => {
     });
 
     /* Defect. Even though only email field contains wrong input, both validations rise an error. */
-    test.only('Invalid email with valid password should trigger only email validation error.', async () => {
+    test('Invalid email with valid password should trigger only email validation error.', async () => {
         await registerPage.writeEmail(helpers.getInvalidEmail());
         await registerPage.writePassword(helpers.getValidPassword());
 
@@ -65,5 +65,42 @@ test.describe('Register Page Tests', () => {
         expect(emailErrorText).toBeTruthy();
         expect(emailErrorText.toLowerCase()).toContain('email');
         expect(isPasswordErrorVisible).toBeFalsy();
+    });
+
+    test('Password 7 characters — below minimum, password validation error', async () => {
+        await registerPage.writeEmail(helpers.getValidEmail());
+        await registerPage.writePassword(helpers.getRandomPassword(7, true, true));
+        expect(await registerPage.isPasswordErrorVisible()).toBeTruthy();
+    });
+
+    test('Password 8 characters — minimum valid length, no password validation error', async () => {
+        await registerPage.writeEmail(helpers.getValidEmail());
+        await registerPage.writePassword(helpers.getRandomPassword(8,true, true));
+        expect(await registerPage.isPasswordErrorVisible()).toBeFalsy();
+    });
+
+    test('Password 9 characters — above minimum, no password validation error', async () => {
+        await registerPage.writeEmail(helpers.getValidEmail());
+        await registerPage.writePassword(helpers.getRandomPassword(9, true, true));
+        expect(await registerPage.isPasswordErrorVisible()).toBeFalsy();
+    });
+
+    test('Password 71 characters — below maximum, no password validation error', async () => {
+        await registerPage.writeEmail(helpers.getValidEmail());
+        await registerPage.writePassword(helpers.getRandomPassword(71, true, true));
+        expect(await registerPage.isPasswordErrorVisible()).toBeFalsy();
+    });
+
+    test('Password 72 characters — maximum valid length, no password validation error', async () => {
+        await registerPage.writeEmail(helpers.getValidEmail());
+        await registerPage.writePassword(helpers.getRandomPassword(72, true, true));
+        expect(await registerPage.isPasswordErrorVisible()).toBeFalsy();
+    });
+
+    /* Defect. Password field in registration doesn't follow validation error message. Anything beyond 72 is still acceptable. */
+    test('Password 73 characters — above maximum, password validation error', async () => {
+        await registerPage.writeEmail(helpers.getValidEmail());
+        await registerPage.writePassword(helpers.getRandomPassword(73, true, true));
+        expect(await registerPage.isPasswordErrorVisible()).toBeTruthy();
     });
 });

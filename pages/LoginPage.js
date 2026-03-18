@@ -3,14 +3,35 @@ import { BasePage } from './BasePage.js';
 export class LoginPage extends BasePage {
     constructor(page) {
         super(page);
-        this.emailInput = this.page.getByLabel('Email input');
-        this.passwordInput = this.page.getByLabel('Password input');
-        this.loginButton = this.page.getByRole('button', { name: 'Login' });
+
         this.seePasswordButton = this.page.getByLabel('Show');
-        this.forgotButton = this.page.getByRole('link', { name: 'Forgot' });
+        this.passwordInput = this.page.getByLabel('Password input');
+        this.emailInput = this.page.getByLabel('Email input');
+
+        /*
+         * //input[@placeholder='john@theydo.com']
+         * //input[@aria-label='Email input']
+         * [aria-label='Email input']
+         * [placeholder='john@theydo.com']
+         */
+
+        this.loginButton = this.page.getByRole('button', { name: 'Login' });
         this.createAccountButton = this.page.getByRole('link', { name: 'Create Account' });
+        this.forgotButton = this.page.getByRole('link', { name: 'Forgot' });
+
+        /*
+         * //a[@href='/forgot-password']
+         * [href='/forgot-password']
+         */
+
         this.emailError = this.page.getByText('Invalid email address');
         this.passwordError = this.page.getByText('Password is required');
+
+        /*
+         * //p[text()='Password is required']
+         * //div[@data-e2e-id='login-form__password']//p
+         * [data-e2e-id='login-form__password'] [data-e2e-id='form-error__text']
+         */
     }
 
     async open() {
