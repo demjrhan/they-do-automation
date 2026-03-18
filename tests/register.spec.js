@@ -66,4 +66,41 @@ test.describe('Register Page Tests', () => {
         expect(emailErrorText.toLowerCase()).toContain('email');
         expect(isPasswordErrorVisible).toBeFalsy();
     });
+
+    test('Password 7 characters — below minimum, password validation error', async () => {
+        await registerPage.writeEmail(helpers.getValidEmail());
+        await registerPage.writePassword(helpers.getRandomPassword(7, true, true));
+        expect(await registerPage.isPasswordErrorVisible()).toBeTruthy();
+    });
+
+    test('Password 8 characters — minimum valid length, no password validation error', async () => {
+        await registerPage.writeEmail(helpers.getValidEmail());
+        await registerPage.writePassword(helpers.getRandomPassword(8,true, true));
+        expect(await registerPage.isPasswordErrorVisible()).toBeFalsy();
+    });
+
+    test('Password 9 characters — above minimum, no password validation error', async () => {
+        await registerPage.writeEmail(helpers.getValidEmail());
+        await registerPage.writePassword(helpers.getRandomPassword(9, true, true));
+        expect(await registerPage.isPasswordErrorVisible()).toBeFalsy();
+    });
+
+    test('Password 71 characters — below maximum, no password validation error', async () => {
+        await registerPage.writeEmail(helpers.getValidEmail());
+        await registerPage.writePassword(helpers.getRandomPassword(71, true, true));
+        expect(await registerPage.isPasswordErrorVisible()).toBeFalsy();
+    });
+
+    test('Password 72 characters — maximum valid length, no password validation error', async () => {
+        await registerPage.writeEmail(helpers.getValidEmail());
+        await registerPage.writePassword(helpers.getRandomPassword(72, true, true));
+        expect(await registerPage.isPasswordErrorVisible()).toBeFalsy();
+    });
+
+    /* Defect. Password field in registration doesn't follow validation error message. Anything beyond 72 is still acceptable. */
+    test('Password 73 characters — above maximum, password validation error', async () => {
+        await registerPage.writeEmail(helpers.getValidEmail());
+        await registerPage.writePassword(helpers.getRandomPassword(73, true, true));
+        expect(await registerPage.isPasswordErrorVisible()).toBeTruthy();
+    });
 });

@@ -32,3 +32,7 @@ export const INVALID_PASSWORD = [
   'password',
   '11111111',
 ];
+
+export const PASSWORD_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+export const PASSWORD_NUMBER_CHARS = '0123456789';
+export const PASSWORD_SPECIAL_CHARS = '!@#$%^&*';

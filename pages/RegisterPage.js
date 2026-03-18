@@ -33,8 +33,6 @@ export class RegisterPage extends BasePage {
         /*
          * [data-e2e-id='register__password-field'] [data-e2e-id='form-error__text']
          * //div[@data-e2e-id='register__password-field']//p
-         *
-         *
          */
     }
 
