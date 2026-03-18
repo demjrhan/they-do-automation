@@ -38,7 +38,7 @@ test.describe('Register Page Tests', () => {
         expect(isCreateAccountClickable).toBeTruthy();
     });
 
-    test.only('Valid email with invalid password should trigger only password validation error.', async () => {
+    test('Valid email with invalid password should trigger only password validation error.', async () => {
         await registerPage.writeEmail(helpers.getValidEmail());
         await registerPage.writePassword(helpers.getInvalidPassword());
 
@@ -53,7 +53,7 @@ test.describe('Register Page Tests', () => {
     });
 
     /* Defect. Even though only email field contains wrong input, both validations rise an error. */
-    test.only('Invalid email with valid password should trigger only email validation error.', async () => {
+    test('Invalid email with valid password should trigger only email validation error.', async () => {
         await registerPage.writeEmail(helpers.getInvalidEmail());
         await registerPage.writePassword(helpers.getValidPassword());
 

@@ -7,13 +7,35 @@ export class RegisterPage extends BasePage {
         super(page);
         this.emailInput = this.page.getByRole('textbox', {name: 'Work Email'});
         this.passwordInput = this.page.getByRole('textbox', {name: 'Password'});
-        this.createAccountButton = this.page.getByRole('button', {name: 'Create account'});
-        this.seePasswordButton = this.page.getByLabel('Show');
         this.loginButton = this.page.getByRole('link', {name: 'Login'});
-        this.emailError = this.page.getByText('Invalid email address');
-        this.passwordError = this.page.getByText(/Password should be 8-72/i);
+        this.createAccountButton = this.page.getByRole('button', {name: 'Create account'});
         this.privacyPolicy = this.page.getByRole('link', {name: 'Privacy Policy'});
         this.termsOfService = this.page.getByRole('link', {name: 'Terms of Service'});
+
+        /*
+         * .p-text-underline:nth-child(2)
+         * a[href*='terms']
+         * //a[contains(@href,'terms')]
+         * //a[@class='p-text-underline'][2]
+         * //a[text()='Terms of Service']
+         */
+
+        this.seePasswordButton = this.page.getByLabel('Show');
+
+        /*
+         * [aria-label='Show']
+         * //button[@aria-label='Show']
+         */
+
+        this.emailError = this.page.getByText('Invalid email address');
+        this.passwordError = this.page.getByText(/Password should be 8-72/i);
+
+        /*
+         * [data-e2e-id='register__password-field'] [data-e2e-id='form-error__text']
+         * //div[@data-e2e-id='register__password-field']//p
+         *
+         *
+         */
     }
 
     async open() {
