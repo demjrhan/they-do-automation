@@ -1,12 +1,14 @@
-import { BasePage } from "./BasePage";
+import {BasePage} from "./BasePage";
 
 export class HomePage extends BasePage {
-    constructor(page){
+    constructor(page) {
         super(page);
-        this.inviteButton = this.page.getByRole('button', { name: 'Invite' });
-        this.seeMoreButton = this.page.getByRole('button', { name: 'See more' });
-        this.viewAllButton = this.page.getByRole('button', { name: 'View all' });
+        this.inviteButton = this.page.getByRole('button', {name: 'Invite'});
+        this.seeMoreButton = this.page.getByRole('button', {name: 'See more'});
+        this.viewAllButton = this.page.getByRole('button', {name: 'View all'});
+        this.createJourneyButton = this.page.getByRole('button', {name: 'Create journey'});
     }
+
     async getWorkspaceUrl() {
         const organizationName = await this.getOrganizationName();
         return '/' + organizationName + '/workspace';
@@ -22,20 +24,23 @@ export class HomePage extends BasePage {
         return '/' + organizationName + '/settings/users';
     }
 
-    async clickInviteButton(){
+    async isCreateJourneyVisible(){
+        return await this.isVisible(this.createJourneyButton);
+    }
+
+    async clickInviteButton() {
         await this.click(this.inviteButton);
     }
 
-    async clickSeeMoreButton(){
+    async clickSeeMoreButton() {
         await this.click(this.seeMoreButton);
     }
 
-    async clickViewAllButton(){
+    async clickViewAllButton() {
         await this.click(this.viewAllButton);
     }
 
-    async getBreadCrumbItemText(index){
-        let breadCrumbItemLocator = `[data-e2e-id='breadcrumbs-item-${index}']`;
-        return await this.getText(breadCrumbItemLocator);
+    async clickCreateJourneyButton() {
+        await this.click(this.createJourneyButton);
     }
 }
