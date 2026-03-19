@@ -41,7 +41,7 @@ export class LoginPage extends BasePage {
 
     async login() {
         const credentials = await this.getCredentials();
-        await this.writePassword(credentials.login);
+        await this.writeEmail(credentials.login);
         await this.writePassword(credentials.password);
         await this.clickLoginButton();
     }

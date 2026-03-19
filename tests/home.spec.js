@@ -18,4 +18,18 @@ test.describe('Home Page Tests', () => {
         const workspaceUrl = await homePage.getWorkspaceUrl()
         await expect(page).toHaveURL(workspaceUrl);
     })
+
+    test('Invite button brings Organization Members section in settings.', async ({ page }) => {
+        await homePage.clickInviteButton();
+        const allMembersUrl = await homePage.getAllMembersUrl();
+        await expect(page).toHaveURL(allMembersUrl);
+    })
+
+    test('See more button brings New Journey screen.', async ({ page }) => {
+        await homePage.clickSeeMoreButton();
+        const workspaceUrl = await homePage.getJourneyUrl();
+        await expect(page).toHaveURL(new RegExp(workspaceUrl));
+        const breadCrumb = await homePage.getBreadCrumbItemText(1);
+        expect(breadCrumb).toMatch(/New journey/i);
+    });
 })
