@@ -6,7 +6,15 @@ export class HomePage extends BasePage {
         this.inviteButton = this.page.getByRole('button', {name: 'Invite'});
         this.seeMoreButton = this.page.getByRole('button', {name: 'See more'});
         this.viewAllButton = this.page.getByRole('button', {name: 'View all'});
+
+        /* This button represents the button in Jump back in section. */
         this.createJourneyButton = this.page.getByRole('button', {name: 'Create journey'});
+
+         /* These buttons belong to the 3 button group below the Welcome, X! section.
+         * createACustomerButton is follow up button after clicking Create personas button.
+         */
+        this.createPersonasButton = this.page.locator('[data-e2e-id="dashboard-overview__add-personas"]');
+        this.createACustomerButton = this.page.getByRole('button', {name: 'Create a customer'});
     }
 
     async getWorkspaceUrl() {
@@ -20,8 +28,14 @@ export class HomePage extends BasePage {
     }
 
     async getAllMembersUrl() {
-        const organizationName = await this.getOrganizationName();
-        return '/' + organizationName + '/settings/users';
+        const organizationName = await this.getWorkspaceUrl();
+        return organizationName + '/settings/users';
+    }
+
+    async getPersonasUrl(){
+        const organizationName = await this.getWorkspaceUrl();
+        return organizationName + '/persona';
+
     }
 
     async isCreateJourneyVisible(){
@@ -42,5 +56,13 @@ export class HomePage extends BasePage {
 
     async clickCreateJourneyButton() {
         await this.click(this.createJourneyButton);
+    }
+
+    async clickCreatePersonasButton() {
+        await this.click(this.createPersonasButton);
+    }
+
+    async clickCreateACustomerButton() {
+        await this.click(this.createACustomerButton);
     }
 }

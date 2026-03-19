@@ -41,11 +41,10 @@ test.describe('Home Page Tests', () => {
         const journeyCount = await journeysPage.getJourneyCount();
         await journeysPage.navigateToHome();
         const isCreateJourneyVisible = await homePage.isCreateJourneyVisible();
-        if (journeyCount === 0) expect(isCreateJourneyVisible).toBeTruthy();
-        else expect(isCreateJourneyVisible).toBeFalsy();
+        if (journeyCount === 0) expect(isCreateJourneyVisible).toBeTruthy(); else expect(isCreateJourneyVisible).toBeFalsy();
     });
 
-    test.only('Create a journey, and delete it all. After deleting all journeys Create journey button should appear on Home Page and trying to delete all should throw error.', async ({page}) => {
+    test('Create a journey, and delete it all. After deleting all journeys Create journey button should appear on Home Page and trying to delete all should throw error.', async ({page}) => {
         await test.step('Create a journey and navigate back journeys page.', async ({}) => {
             await homePage.navigateToJourneys();
             await journeysPage.clickCreateJourneyButton();
@@ -60,5 +59,17 @@ test.describe('Home Page Tests', () => {
             const isCreateJourneyVisible = await homePage.isCreateJourneyVisible();
             expect(isCreateJourneyVisible).toBeTruthy();
         })
-    })
+    });
+
+    /* TODO: Create new persona gives an error "There was an error while saving this persona."
+        When I go to network tab and check the api response/request I can see that invalid organizationSlug error.
+        However, when I directly Personas -> Create new persona this error doesn't occur.
+
+        test('Create new persona using button Create personas under Welcome, X! section in Home Page.', async ({page}) => {
+            await homePage.clickCreatePersonasButton();
+            await homePage.clickCreateACustomerButton();
+            const personasUrl = await homePage.getPersonasUrl();
+            await expect(page).toHaveURL(personasUrl);
+        })
+    */
 })
