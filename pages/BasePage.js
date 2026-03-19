@@ -8,6 +8,7 @@ export class BasePage {
         this.sidebarJourneysLink = this.page.getByRole('link', {name: 'Journeys'});
         this.sidebarPersonasLink = this.page.getByRole('link', {name: 'Personas'});
         this.sidebarMetricsLink = this.page.getByRole('link', {name: 'Metrics'});
+        this.sidebarSettingsLink = this.page.getByRole('link', {name: 'Settings'});
         this.showSideBarButton = this.page.locator('[aria-label="Show sidebar"]');
         this.hideSideBarButton = this.page.locator('[aria-label="Hide navigation sidebar"]');
     }
@@ -183,6 +184,12 @@ export class BasePage {
         return (await el.textContent()).trim();
     }
 
+    async getInputValue(selector) {
+        const el = this.toLocator(selector).first();
+        await el.waitFor({state: 'attached', timeout: this.defaultTimeout});
+        return (await el.inputValue()).trim();
+    }
+
     async getTextInside(parentLocator, childSelector) {
         const child = this.toLocator(parentLocator).locator(childSelector).first();
         return (await child.textContent()).trim();
@@ -266,5 +273,9 @@ export class BasePage {
 
     async navigateToMetrics() {
         await this.click(this.sidebarMetricsLink);
+    }
+
+    async navigateToSettings(){
+        await this.click(this.sidebarSettingsLink);
     }
 }

@@ -6,6 +6,7 @@ export class HomePage extends BasePage {
         this.inviteButton = this.page.getByRole('button', {name: 'Invite'});
         this.seeMoreButton = this.page.getByRole('button', {name: 'See more'});
         this.viewAllButton = this.page.getByRole('button', {name: 'View all'});
+        this.welcomeTitle = this.page.locator('[data-e2e-id="dashboard-overview__onboarding-welcome"]')
 
         /* This button represents the button in Jump back in section. */
         this.createJourneyButton = this.page.getByRole('button', {name: 'Create journey'});
@@ -36,6 +37,11 @@ export class HomePage extends BasePage {
         const organizationName = await this.getWorkspaceUrl();
         return organizationName + '/persona';
 
+    }
+
+    async getWelcomeName() {
+        const fullWelcomeText = await this.getText(this.welcomeTitle);
+        return fullWelcomeText.split(',').at(1).replace('!','').trim();
     }
 
     async isCreateJourneyVisible(){
