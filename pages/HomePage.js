@@ -88,5 +88,6 @@ export class HomePage extends BasePage {
     async selectRandomTemplateCard(){
         const templateCount = await this.count(this.templateCard);
         const randomNumber = Math.floor(Math.random() * templateCount);
+        return this.getText(this.templateCard, randomNumber);
     }
 }

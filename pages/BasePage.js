@@ -43,8 +43,8 @@ export class BasePage {
             : selectorOrLocator;
     }
 
-    find(selector) {
-        return this.page.locator(selector).first();
+    find(selector, nth = 0) {
+        return this.page.locator(selector).nth(nth);
     }
 
     findAll(selector) {
@@ -62,14 +62,14 @@ export class BasePage {
         return this;
     }
 
-    async findElementPresence(selector) {
-        const loc = this.toLocator(selector).first();
+    async findElementPresence(selector, nth = 0) {
+        const loc = this.toLocator(selector).nth(nth);
         await loc.waitFor({state: 'attached', timeout: this.defaultTimeout});
         return loc;
     }
 
-    async findElementVisibility(selector) {
-        const loc = this.toLocator(selector).first();
+    async findElementVisibility(selector, nth = 0) {
+        const loc = this.toLocator(selector).nth(nth);
         await loc.waitFor({state: 'visible', timeout: this.defaultTimeout});
         return loc;
     }
@@ -86,18 +86,18 @@ export class BasePage {
         return loc;
     }
 
-    async waitUntilElementVisibility(selector) {
-        await this.toLocator(selector).first().waitFor({state: 'visible', timeout: this.defaultTimeout});
+    async waitUntilElementVisibility(selector, nth = 0) {
+        await this.toLocator(selector).nth(nth).waitFor({state: 'visible', timeout: this.defaultTimeout});
         return this;
     }
 
-    async waitUntilElementInvisibility(selector) {
-        await this.toLocator(selector).first().waitFor({state: 'hidden', timeout: this.defaultTimeout});
+    async waitUntilElementInvisibility(selector, nth = 0) {
+        await this.toLocator(selector).nth(nth).waitFor({state: 'hidden', timeout: this.defaultTimeout});
         return this;
     }
 
-    async waitUntilElementPresence(selector) {
-        await this.toLocator(selector).first().waitFor({state: 'attached', timeout: this.defaultTimeout});
+    async waitUntilElementPresence(selector, nth = 0) {
+        await this.toLocator(selector).nth(nth).waitFor({state: 'attached', timeout: this.defaultTimeout});
         return this;
     }
 
@@ -106,97 +106,96 @@ export class BasePage {
         return this;
     }
 
-    async waitUntilExistsInside(parentSelector, childSelector) {
+    async waitUntilExistsInside(parentSelector, childSelector, nth = 0) {
         await this.waitUntilElementPresence(parentSelector);
-        await this.toLocator(parentSelector).locator(childSelector).first().waitFor({
-            state: 'attached', timeout: this.defaultTimeout
-        });
+        const childLocator = this.toLocator(parentSelector).locator(childSelector).nth(nth);
+        await this.waitUntilElementPresence(childLocator);
         return this;
     }
 
-    async clearTextField(locator) {
-        const el = this.toLocator(locator).first();
+    async clearTextField(locator, nth = 0) {
+        const el = this.toLocator(locator).nth(nth);
         await el.fill('');
         return this;
     }
 
-    async sendKeys(selector, text) {
-        const el = this.toLocator(selector).first();
-        await el.waitFor({state: 'visible', timeout: this.defaultTimeout});
+    async sendKeys(selector, text, nth = 0) {
+        const el = this.toLocator(selector).nth(nth);
+        await this.waitUntilElementVisibility(el);
         await el.fill('');
         await el.fill(text);
         return this;
     }
 
-    async sendEnter(selector) {
-        const el = this.toLocator(selector).first();
-        await el.waitFor({state: 'visible', timeout: this.defaultTimeout});
+    async sendEnter(selector, nth = 0) {
+        const el = this.toLocator(selector).nth(nth);
+        await this.waitUntilElementVisibility(el);
         await el.press('Enter');
         return this;
     }
 
-    async sendTab(selector) {
-        const el = this.toLocator(selector).first();
-        await el.waitFor({state: 'visible', timeout: this.defaultTimeout});
+    async sendTab(selector, nth = 0) {
+        const el = this.toLocator(selector).nth(nth);
+        await this.waitUntilElementVisibility(el);
         await el.press('Tab');
         return this;
     }
 
-    async sendSpace(selector) {
-        const el = this.toLocator(selector).first();
-        await el.waitFor({state: 'visible', timeout: this.defaultTimeout});
+    async sendSpace(selector, nth = 0) {
+        const el = this.toLocator(selector).nth(nth);
+        await this.waitUntilElementVisibility(el);
         await el.press('Space');
         return this;
     }
 
-    async click(selector) {
-        await this.waitUntilElementVisibility(selector);
-        const loc = this.toLocator(selector).first();
+    async click(selector, nth = 0) {
+        await this.waitUntilElementVisibility(selector, nth);
+        const loc = this.toLocator(selector).nth(nth);
         await this.scrollToElement(loc);
         await loc.click();
         return this;
     }
 
-    async dragAndDrop(fromSelector, toSelector) {
-        const from = this.toLocator(fromSelector).first();
-        const to = this.toLocator(toSelector).first();
-        await from.waitFor({state: 'visible', timeout: this.defaultTimeout});
-        await to.waitFor({state: 'visible', timeout: this.defaultTimeout});
+    async dragAndDrop(fromSelector, toSelector, fromNth = 0, toNth = 0) {
+        const from = this.toLocator(fromSelector).nth(fromNth);
+        const to = this.toLocator(toSelector).nth(toNth);
+        await this.waitUntilElementVisibility(from);
+        await this.waitUntilElementVisibility(to);
         await from.dragTo(to);
         return this;
     }
 
-    async scrollToElement(selector) {
-        const loc = this.toLocator(selector).first();
+    async scrollToElement(selector, nth = 0) {
+        const loc = this.toLocator(selector).nth(nth);
         await loc.scrollIntoViewIfNeeded();
         return this;
     }
 
-    async scrollToElementSmooth(selector) {
-        const loc = this.toLocator(selector).first();
+    async scrollToElementSmooth(selector, nth = 0) {
+        const loc = this.toLocator(selector).nth(nth);
         await loc.evaluate((el) => el.scrollIntoView({behavior: 'smooth'}));
         return this;
     }
 
-    async getText(selector) {
-        const el = this.toLocator(selector).first();
-        await el.waitFor({state: 'attached', timeout: this.defaultTimeout});
+    async getText(selector, nth = 0) {
+        const el = this.toLocator(selector).nth(nth);
+        await this.waitUntilElementPresence(el);
         return (await el.textContent()).trim();
     }
 
-    async getInputValue(selector) {
-        const el = this.toLocator(selector).first();
-        await el.waitFor({state: 'attached', timeout: this.defaultTimeout});
+    async getInputValue(selector, nth = 0) {
+        const el = this.toLocator(selector).nth(nth);
+        await this.waitUntilElementPresence(el);
         return (await el.inputValue()).trim();
     }
 
-    async getTextInside(parentLocator, childSelector) {
-        const child = this.toLocator(parentLocator).locator(childSelector).first();
+    async getTextInside(parentLocator, childSelector, nth = 0) {
+        const child = this.toLocator(parentLocator).locator(childSelector).nth(nth);
         return (await child.textContent()).trim();
     }
 
-    async findInside(parentLocator, childSelector) {
-        return this.toLocator(parentLocator).locator(childSelector).first();
+    async findInside(parentLocator, childSelector, nth = 0) {
+        return this.toLocator(parentLocator).locator(childSelector).nth(nth);
     }
 
     async existsInside(parentLocator, childSelector) {
@@ -226,25 +225,25 @@ export class BasePage {
         }
     }
 
-    async isVisible(selector) {
+    async isVisible(selector, nth = 0) {
         try {
-            return await this.toLocator(selector).first().isVisible();
+            return await this.toLocator(selector).nth(nth).isVisible();
         } catch {
             return false;
         }
     }
 
-    async isEnabled(selector) {
+    async isEnabled(selector, nth = 0) {
         try {
-            return await this.toLocator(selector).first().isEnabled();
+            return await this.toLocator(selector).nth(nth).isEnabled();
         } catch {
             return false;
         }
     }
 
-    async isSelected(selector) {
+    async isSelected(selector, nth = 0) {
         try {
-            return await this.toLocator(selector).first().isChecked();
+            return await this.toLocator(selector).nth(nth).isChecked();
         } catch {
             return false;
         }
