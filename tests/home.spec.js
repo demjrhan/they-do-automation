@@ -77,10 +77,38 @@ test.describe('Home Page Tests', () => {
         })
     */
 
-    test.only('Check if welcome text includes correct name of user.', async ({}) => {
+    test('Check if welcome text includes correct name of user.', async ({}) => {
         const nameFromHome = await homePage.getWelcomeName();
         await homePage.navigateToSettings();
         const nameFromSettings = await settingsPage.getFirstName();
         expect(nameFromHome).toStrictEqual(nameFromSettings);
+    });
+
+    test('Delete all journeys, create one from home page by clicking Start a journey. It should appear in Jump back in section.', async ({}) => {
+        await test.step('Select all journeys and delete them. In the end return to home page.', async ({}) => {
+            await homePage.navigateToJourneys();
+            const journeyCount = await journeysPage.getJourneyCount();
+            if (journeyCount > 0) {
+                await journeysPage.deleteAllJourneys();
+            } else console.log('Deleting all journeys skipped since there is no journey existing.')
+            await journeysPage.navigateToHome();
+        });
+
+        await test.step('Create new journey by clicking Start a journey button. And return back to home.', async ({}) => {
+            await homePage.clickStartAJourneyButton();
+            await homePage.showSideBar();
+            await homePage.navigateToHome();
+        });
+
+        await test.step('Check if jump back in journey count is bigger than 0.', async ({}) => {
+            const count = await homePage.getJumpBackInCardCount();
+            expect(count).toBeTruthy();
+        })
+    });
+
+    test('Selecting template from Home Page brings the Journey creation page with correctly selected template.', async ({}) => {
+        await test.step('Selecting template from the home page.', async ({}) => {
+            const count = await homePage.selectRandomTemplateCard();
+        })
     })
 })

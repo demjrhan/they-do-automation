@@ -195,7 +195,7 @@ export class BasePage {
         return (await child.textContent()).trim();
     }
 
-    findInside(parentLocator, childSelector) {
+    async findInside(parentLocator, childSelector) {
         return this.toLocator(parentLocator).locator(childSelector).first();
     }
 
@@ -210,6 +210,12 @@ export class BasePage {
     async hasChildElements(parentLocator, childSelector = '> div') {
         const items = this.toLocator(parentLocator).locator(childSelector);
         return (await items.count()) > 0;
+    }
+
+    async count(selector) {
+        const locator = this.toLocator(selector);
+        await this.waitUntilElementVisibility(locator);
+        return locator.count();
     }
 
     async isExists(selector) {

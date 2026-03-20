@@ -16,6 +16,10 @@ export class HomePage extends BasePage {
          */
         this.createPersonasButton = this.page.locator('[data-e2e-id="dashboard-overview__add-personas"]');
         this.createACustomerButton = this.page.getByRole('button', {name: 'Create a customer'});
+        this.startAJourneyButton = this.page.locator('[data-e2e-id="dashboard-overview__create-journey"]');
+        this.jumpBackInCard = this.page.locator('[data-e2e-id="journey-dashboard__recently-worked-on-journey__card"]');
+
+        this.templateCard = this.page.locator('[data-e2e-id="template-card__content"]')
     }
 
     async getWorkspaceUrl() {
@@ -44,6 +48,10 @@ export class HomePage extends BasePage {
         return fullWelcomeText.split(',').at(1).replace('!','').trim();
     }
 
+    async getJumpBackInCardCount(){
+        return await this.count(this.jumpBackInCard);
+    }
+
     async isCreateJourneyVisible(){
         return await this.isVisible(this.createJourneyButton);
     }
@@ -68,7 +76,17 @@ export class HomePage extends BasePage {
         await this.click(this.createPersonasButton);
     }
 
+    /* This button is visible after clicking create personas button. */
     async clickCreateACustomerButton() {
         await this.click(this.createACustomerButton);
+    }
+
+    async clickStartAJourneyButton() {
+        await this.click(this.startAJourneyButton);
+    }
+
+    async selectRandomTemplateCard(){
+        const templateCount = await this.count(this.templateCard);
+        const randomNumber = Math.floor(Math.random() * templateCount);
     }
 }
