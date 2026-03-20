@@ -41,14 +41,13 @@ test.describe('Home Page Tests', () => {
 
     test('If journeys count is 0, Jump right in should have Create journey button. Else should be not visible.', async ({}) => {
         await homePage.navigateToJourneys();
-        const journeyCount = await journeysPage.getJourneyCount();
+        const journeyCount = await journeysPage.getJourneyCountFromTitle();
         await journeysPage.navigateToHome();
         const isCreateJourneyVisible = await homePage.isCreateJourneyVisible();
         if (journeyCount === 0) expect(isCreateJourneyVisible).toBeTruthy(); else expect(isCreateJourneyVisible).toBeFalsy();
     });
 
-    test('Create a journey, and delete it all. After deleting all journeys Create journey button should appear ' +
-        'on Home Page and trying to delete all should throw error.', async ({}) => {
+    test('Create a journey, and delete it all. After deleting all journeys Create journey button should appear on Home Page and trying to delete all should throw error.', async ({}) => {
         await test.step('Create a journey and navigate back journeys page.', async ({}) => {
             await homePage.navigateToJourneys();
             await journeysPage.clickCreateJourneyButton();
@@ -87,7 +86,7 @@ test.describe('Home Page Tests', () => {
     test('Delete all journeys, create one from home page by clicking Start a journey. It should appear in Jump back in section.', async ({}) => {
         await test.step('Select all journeys and delete them. In the end return to home page.', async ({}) => {
             await homePage.navigateToJourneys();
-            const journeyCount = await journeysPage.getJourneyCount();
+            const journeyCount = await journeysPage.getJourneyCountFromTitle();
             if (journeyCount > 0) {
                 await journeysPage.deleteAllJourneys();
             } else console.log('Deleting all journeys skipped since there is no journey existing.')

@@ -13,23 +13,35 @@ export class JourneysPage extends BasePage {
         this.templateCard = this.page.locator('[data-e2e-id="template-selector-item"]');
         this.selectedTemplateCard = this.page.locator('[data-e2e-id="template-selector-item"].is-selected');
         this.templateCardList = this.page.locator('[data-e2e-id="journey-default-templates-list"]');
+        this.journeyItem = this.page.locator('[data-e2e-id="organism-table__row-wrap"]');
+        this.journeySelectedTextBulkEditBar = this.page.locator('[data-e2e-id="bulk-edit-bar__label"]');
     }
 
-    async getJourneyCount() {
+    async open() {
+        const path = await this.getJourneyUrl();
+        this.page.goto(path)
+    }
+
+    async getJourneyCountFromTitle() {
         let journeyCountRaw = await this.getText(this.journeyCountTitle);
         return journeyCountRaw.split(' ').at(0);
     }
 
-    async selectAllJourneys() {
-        const journeyCount = await this.getJourneyCount();
-        if (journeyCount === 0) throw new Error('No journeys found.');
-        else await this.click(this.selectAllJourneysButton);
+    async getJourneyCountFromList() {
+        return await this.count(this.journeyItem);
     }
 
-    async deselectAllJourneysButton() {
-        const isDeselectAllJourneysButtonVisible = this.isVisible(this.deselectAllJourneysButton);
-        if (!isDeselectAllJourneysButtonVisible) throw new Error('Deselect all journeys button not available. Make sure select all journeys first.');
-        else await this.click(this.deSelectAllJourneysButton);
+    async getJourneyCountFromBulkEditBar() {
+        let journeyCountRaw = await this.getText(this.journeySelectedTextBulkEditBar);
+        return journeyCountRaw.split(' ').at(0);
+    }
+
+    async selectAllJourneys() {
+        await this.click(this.selectAllJourneysButton);
+    }
+
+    async deselectAllJourneys() {
+        await this.click(this.deSelectAllJourneysButton);
     }
 
     async clickDeleteAllJourneysButton() {
@@ -61,7 +73,7 @@ export class JourneysPage extends BasePage {
         return title.replace('TheyDo', '');
     }
 
-    async getSelectedTemplateCardTitle(){
+    async getSelectedTemplateCardTitle() {
         const title = await this.getText(this.selectedTemplateCard);
         return title.replace('TheyDo', '');
     }

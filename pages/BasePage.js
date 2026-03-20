@@ -18,9 +18,34 @@ export class BasePage {
         return this;
     }
 
+    async getWorkspaceUrl() {
+        const organizationName = await this.getOrganizationName();
+        return '/' + organizationName + '/workspace';
+    }
+
+    async getJourneyUrl() {
+        const organizationName = await this.getWorkspaceUrl();
+        return organizationName + '/journey';
+    }
+
+    async getAllMembersUrl() {
+        const organizationName = await this.getOrganizationName();
+        return '/' + organizationName + '/settings/users';
+    }
+
+    async getPersonasUrl() {
+        const organizationName = await this.getWorkspaceUrl();
+        return organizationName + '/persona';
+
+    }
+
     async refresh() {
         await this.page.reload();
         return this;
+    }
+
+    async waitFor(seconds = this.defaultTimeout / 1000) {
+        await this.page.waitForTimeout(seconds * 1000);
     }
 
     async getCredentials() {
@@ -218,6 +243,7 @@ export class BasePage {
     }
 
     async isExists(selector) {
+        await this.waitFor(1);
         try {
             return (await this.toLocator(selector).count()) > 0;
         } catch {
@@ -226,6 +252,7 @@ export class BasePage {
     }
 
     async isVisible(selector, nth = 0) {
+        await this.waitFor(1);
         try {
             return await this.toLocator(selector).nth(nth).isVisible();
         } catch {
@@ -234,6 +261,7 @@ export class BasePage {
     }
 
     async isEnabled(selector, nth = 0) {
+        await this.waitFor(1);
         try {
             return await this.toLocator(selector).nth(nth).isEnabled();
         } catch {
@@ -242,6 +270,7 @@ export class BasePage {
     }
 
     async isSelected(selector, nth = 0) {
+        await this.waitFor(1);
         try {
             return await this.toLocator(selector).nth(nth).isChecked();
         } catch {
@@ -256,31 +285,38 @@ export class BasePage {
     }
 
     /* Sidebar */
-    async showSideBar(){
+    async showSideBar() {
+        await this.waitFor(1);
         await this.click(this.showSideBarButton);
     }
 
-    async hideSideBar(){
+    async hideSideBar() {
+        await this.waitFor(1);
         await this.click(this.hideSideBarButton);
     }
 
     async navigateToHome() {
+        await this.waitFor(1);
         await this.click(this.sidebarHomeLink);
     }
 
     async navigateToJourneys() {
+        await this.waitFor(1);
         await this.click(this.sidebarJourneysLink);
     }
 
     async navigateToPersonas() {
+        await this.waitFor(1);
         await this.click(this.sidebarPersonasLink);
     }
 
     async navigateToMetrics() {
+        await this.waitFor(1);
         await this.click(this.sidebarMetricsLink);
     }
 
-    async navigateToSettings(){
+    async navigateToSettings() {
+        await this.waitFor(1);
         await this.click(this.sidebarSettingsLink);
     }
 }
