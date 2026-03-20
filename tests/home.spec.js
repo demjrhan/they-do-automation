@@ -106,11 +106,25 @@ test.describe('Home Page Tests', () => {
         })
     });
 
-    test.only('Selecting template from Home Page brings the Journey creation page with correctly selected template.', async ({}) => {
+    test('Selecting template from Home Page brings the Journey creation page with correctly selected template.', async ({}) => {
         await test.step('Selecting template from the home page.', async ({}) => {
             const title = await homePage.selectRandomTemplateCardAndGetItsTitle();
             const selectedTemplateCardTitle = await journeysPage.getSelectedTemplateCardTitle();
             expect(selectedTemplateCardTitle).toBe(title);
         })
+    });
+
+    test('Initials written inside of jump back in card should match with user\'s name and surname', async ({}) => {
+
+        await test.step('Create new journey by clicking Start a journey button. And return back to home.', async ({}) => {
+            await homePage.clickStartAJourneyButton();
+            await homePage.showSideBar();
+            await homePage.navigateToHome();
+        });
+
+        const initialsFromHome = await homePage.getJourneyCardIconInitials();
+        await homePage.navigateToSettings();
+        const initialsFromSettings = await settingsPage.getInitials();
+        expect(initialsFromHome).toBe(initialsFromSettings);
     })
 })

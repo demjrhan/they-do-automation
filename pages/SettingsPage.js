@@ -10,18 +10,28 @@ export class SettingsPage extends BasePage {
         this.jobTitle = this.page.getByRole('textbox', {name: 'Job title'});
     }
 
-    async navigateToAccount(){
+    async navigateToAccount() {
         await this.click(this.sidebarAccountLink);
     }
-    async getFirstName(){
+
+    async getFirstName() {
         await this.navigateToAccount();
         return await this.getInputValue(this.firstNameField);
     }
-    async getLastName(){
+
+    async getLastName() {
         await this.navigateToAccount();
         return await this.getInputValue(this.lastNameField);
     }
-    async getJobTitle(){
+
+    async getInitials() {
+        await this.navigateToAccount();
+        const firstName = await this.getInputValue(this.firstNameField);
+        const lastName = await this.getInputValue(this.lastNameField);
+        return firstName.at(0) + lastName.at(0);
+    }
+
+    async getJobTitle() {
         await this.navigateToAccount();
         return await this.getInputValue(this.jobTitle);
     }

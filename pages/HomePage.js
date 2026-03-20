@@ -7,7 +7,9 @@ export class HomePage extends BasePage {
         this.seeMoreButton = this.page.getByRole('button', {name: 'See more'});
         this.viewAllButton = this.page.getByRole('button', {name: 'View all'});
         this.welcomeTitle = this.page.locator('[data-e2e-id="dashboard-overview__onboarding-welcome"]')
+
         this.jumpBackInCard = this.page.locator('[data-e2e-id="journey-dashboard__recently-worked-on-journey__card"]');
+        this.jumpBackInCardIconInitials = this.page.locator('[data-e2e-id="user-avatar"]');
 
         /* This button represents the button in Jump back in section. */
         this.createJourneyButton = this.page.getByRole('button', {name: 'Create journey'});
@@ -52,6 +54,10 @@ export class HomePage extends BasePage {
 
     async getJumpBackInCardCount() {
         return await this.count(this.jumpBackInCard);
+    }
+
+    async getJourneyCardIconInitials(){
+        return await this.getText(this.jumpBackInCardIconInitials);
     }
 
     async isCreateJourneyVisible() {
