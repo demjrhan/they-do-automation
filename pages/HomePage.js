@@ -7,19 +7,21 @@ export class HomePage extends BasePage {
         this.seeMoreButton = this.page.getByRole('button', {name: 'See more'});
         this.viewAllButton = this.page.getByRole('button', {name: 'View all'});
         this.welcomeTitle = this.page.locator('[data-e2e-id="dashboard-overview__onboarding-welcome"]')
+        this.jumpBackInCard = this.page.locator('[data-e2e-id="journey-dashboard__recently-worked-on-journey__card"]');
 
         /* This button represents the button in Jump back in section. */
         this.createJourneyButton = this.page.getByRole('button', {name: 'Create journey'});
 
-         /* These buttons belong to the 3 button group below the Welcome, X! section.
-         * createACustomerButton is follow up button after clicking Create personas button.
-         */
+        /* These buttons belong to the 3 button group below the Welcome, X! section.
+        * createACustomerButton is follow up button after clicking Create personas button.
+        */
         this.createPersonasButton = this.page.locator('[data-e2e-id="dashboard-overview__add-personas"]');
         this.createACustomerButton = this.page.getByRole('button', {name: 'Create a customer'});
         this.startAJourneyButton = this.page.locator('[data-e2e-id="dashboard-overview__create-journey"]');
-        this.jumpBackInCard = this.page.locator('[data-e2e-id="journey-dashboard__recently-worked-on-journey__card"]');
 
+        /* This locator represents Start with a template sections template cards. */
         this.templateCard = this.page.locator('[data-e2e-id="template-card__content"]')
+
     }
 
     async getWorkspaceUrl() {
@@ -37,7 +39,7 @@ export class HomePage extends BasePage {
         return organizationName + '/settings/users';
     }
 
-    async getPersonasUrl(){
+    async getPersonasUrl() {
         const organizationName = await this.getWorkspaceUrl();
         return organizationName + '/persona';
 
@@ -45,14 +47,14 @@ export class HomePage extends BasePage {
 
     async getWelcomeName() {
         const fullWelcomeText = await this.getText(this.welcomeTitle);
-        return fullWelcomeText.split(',').at(1).replace('!','').trim();
+        return fullWelcomeText.split(',').at(1).replace('!', '').trim();
     }
 
-    async getJumpBackInCardCount(){
+    async getJumpBackInCardCount() {
         return await this.count(this.jumpBackInCard);
     }
 
-    async isCreateJourneyVisible(){
+    async isCreateJourneyVisible() {
         return await this.isVisible(this.createJourneyButton);
     }
 
@@ -85,9 +87,11 @@ export class HomePage extends BasePage {
         await this.click(this.startAJourneyButton);
     }
 
-    async selectRandomTemplateCard(){
+    async selectRandomTemplateCardAndGetItsTitle() {
         const templateCount = await this.count(this.templateCard);
         const randomNumber = Math.floor(Math.random() * templateCount);
-        return this.getText(this.templateCard, randomNumber);
+        const title = await this.getText(this.templateCard, randomNumber);
+        await this.click(this.templateCard, randomNumber);
+        return title.replace('TheyDo', '');
     }
 }

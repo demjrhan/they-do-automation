@@ -106,10 +106,11 @@ test.describe('Home Page Tests', () => {
         })
     });
 
-    test('Selecting template from Home Page brings the Journey creation page with correctly selected template.', async ({}) => {
+    test.only('Selecting template from Home Page brings the Journey creation page with correctly selected template.', async ({}) => {
         await test.step('Selecting template from the home page.', async ({}) => {
-            const count = await homePage.selectRandomTemplateCard();
-            console.log(count);
+            const title = await homePage.selectRandomTemplateCardAndGetItsTitle();
+            const selectedTemplateCardTitle = await journeysPage.getSelectedTemplateCardTitle();
+            expect(selectedTemplateCardTitle).toBe(title);
         })
     })
 })
