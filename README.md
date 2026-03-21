@@ -31,14 +31,6 @@
 
 ---
 
-## Prerequisites
-
-- **Node.js** (LTS recommended)
-- **npm**
-- **Google Chrome** (Chromium is installed by Playwright on first run)
-
----
-
 ## Project Structure
 
 ```
@@ -80,6 +72,8 @@ they-do-automation/
 ---
 
 ## How to Run
+
+**Prereqs:** Node.js (LTS recommended), npm, Google Chrome
 
 **Install dependencies (first time):**
 
