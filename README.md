@@ -6,7 +6,7 @@
 ![Playwright](https://img.shields.io/badge/Playwright-45ba4b?style=for-the-badge&logo=playwright&logoColor=white)
 ![npm](https://img.shields.io/badge/npm-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)
 
-> Page Object Model UI automation for [TheyDo](https://app.theydo.com) with Playwright.  
+> Page Object Model UI automation for [TheyDo](https://www.theydo.com/) with Playwright.  
 
 ---
 
